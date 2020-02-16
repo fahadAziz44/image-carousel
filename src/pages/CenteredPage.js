@@ -32,6 +32,8 @@ const ImageWrapper = styled.div`
     justify-content: center;
     align-items: center;
     color: white;
+    width: 100%;
+    height: 100%;
     &:hover {
         background-color: #89e489;
     }

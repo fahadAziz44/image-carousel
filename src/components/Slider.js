@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
@@ -16,6 +16,9 @@ const Wrapper = styled.div`
         justify-content: space-around;
         align-items: center;
         width: 100%;
+        .nav-link {
+            cursor: pointer;
+        }
     }
 
     .slider {
@@ -46,41 +49,61 @@ const Wrapper = styled.div`
     } 
 `
 
-class ImageSlider extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            selected: 0,
-            total: 5
-        };
+const ImageSlider = (props) => {
+    const [centered, setCenter] = useState(0);
+    const [totalSlides, setTotalSlides] = useState(React.Children.count(props.children));
+    const slideRef = React.createRef()
+    const slideRefs = React.Children.map(props.children, () => {
+        return React.createRef()
+    })
 
+
+    useEffect(() => {
+        executeScroll(slideRefs[centered])
+    });
+
+    const moveNext = () => {
+        setCenter((centered + 1) % totalSlides)
     }
 
-    moveNext() {
-        this.setState({ selected: (this.state.selected + 1) % this.state.total })
+    const movePrev = () => {
+        if (centered <= 0) {
+            setCenter(totalSlides - 1)
+        } else {
+            setCenter(centered - 1)
+        }
     }
 
-    movePrev() {
-        this.setState({ selected: (this.state.selected + 1) % this.state.total })
+    const executeScroll = (ref) => {
+        if (slideRef && slideRef.current && ref && ref.current) {
+            slideRef.current.scroll({
+                left: ref.current.offsetLeft,
+                top: 0,
+                behavior: 'smooth'
+            })
+        }
     }
 
+    return (
+        <Wrapper>
+            <div ref={slideRef} className='slider'>
+                {
+                    React.Children.map(props.children, (element, index) => {
+                        return (
+                        <div ref={slideRefs[index]} className={`slide slide_${index}`}>
+                            {element}
+                        </div>
+                        )
+                    })
+                }
+            </div>
+            <div className='nav-links'>
+                <div className='nav-link nav-link--prev' onClick={movePrev}>Prev</div>
+                <div className='nav-link nav-link--next' onClick={moveNext}>Next</div>
+            </div>
+        </Wrapper>
+    )
 
-    render() {
-        return (
-            <Wrapper>
-                <div className='slider'>
-                    {
-                        React.Children.map(this.props.children, (element, index) => {
-                            return <element.type {...element.props} className={`${element.props.className} slide slide_${index}`}>{element.children}</element.type>
-                        })
-                    }
-                </div>
-                <div className='nav-links'>
-
-                </div>
-            </Wrapper>
-        )
-    }
 }
 
 

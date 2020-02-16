@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import SliderHook from './SliderHook'
 
 
 const Wrapper = styled.div`
@@ -30,6 +31,7 @@ const Wrapper = styled.div`
         scroll-snap-type: x mandatory;
         scrollbar-width: none; /* Firefox */
         -ms-overflow-style: none;  /* Internet Explorer 10+ */
+        scroll-behavior: smooth;
     }
     .slider::-webkit-scrollbar { 
         display: none;  /* Safari and Chrome */
@@ -50,8 +52,8 @@ const Wrapper = styled.div`
 `
 
 const ImageSlider = (props) => {
-    const [centered, setCenter] = useState(0);
-    const [totalSlides, setTotalSlides] = useState(React.Children.count(props.children));
+    const {centered, moveNext, movePrev } = SliderHook(0, props.children)
+
     const slideRef = React.createRef()
     const slideRefs = React.Children.map(props.children, () => {
         return React.createRef()
@@ -61,18 +63,6 @@ const ImageSlider = (props) => {
     useEffect(() => {
         executeScroll(slideRefs[centered])
     });
-
-    const moveNext = () => {
-        setCenter((centered + 1) % totalSlides)
-    }
-
-    const movePrev = () => {
-        if (centered <= 0) {
-            setCenter(totalSlides - 1)
-        } else {
-            setCenter(centered - 1)
-        }
-    }
 
     const executeScroll = (ref) => {
         if (slideRef && slideRef.current && ref && ref.current) {

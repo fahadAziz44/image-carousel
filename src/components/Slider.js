@@ -44,9 +44,7 @@ const NavLinks = styled.div`
 `
 
 const ImageSlider = ({looped, children}) => {
-    
     const {centered, moveNext, movePrev } = sliderHook({}, 0, children)
-
     
     return (
         <Wrapper>

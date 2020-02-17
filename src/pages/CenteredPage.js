@@ -1,6 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from 'react'
+import styled from 'styled-components'
 import ImageSlider from '../components/Slider'
+import SampleSlide from '../components/SampleSlide'
 
 
 const CenteredFlex = styled.div`
@@ -23,36 +24,20 @@ const CenteredPage = (props) => {
         <CenteredFlex>
             <div className='limiting-window'>
                 <ImageSlider>
+                    <SampleSlide text={'🛸Out of this world Slider🛸'} />
+                    <SampleSlide text={'🧠I call it S lider 🧠'} />
+                    <SampleSlide text={'🧨You can slide anything inside 🧨'} />
+                    <SampleSlide text={'for Example: Brains 🧠'} />
                     {
-                        [...Array(5)].map((x, i) => <Image key={i} index={i} />)
+                        [...Array(2)].map((x, i) => <SampleSlide key={i} text={
+                            [...Array(i+3)].map((x, i) => '🧠')    
+                        } />)
                     }
+                    <SampleSlide text={'✨Thanks for the opportunity✨'} />
+                    <SampleSlide text={'🚀really appreciate that🚀'} />
                 </ImageSlider>
             </div>
         </CenteredFlex>
     )
 }
 export default CenteredPage
-
-
-
-const ImageWrapper = styled.div`
-    background-color: #71bf71;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    width: 100%;
-    height: 100%;
-    &:hover {
-        background-color: #89e489;
-    }
-`
-
-
-const Image = (props) => {
-    return (
-        <ImageWrapper {...props}>
-            <h2>{props.index + 1}</h2>
-        </ImageWrapper>
-    )
-}

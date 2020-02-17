@@ -45,11 +45,7 @@ const NavLinks = styled.div`
 
 const ImageSlider = ({looped, children}) => {
     
-    const {centered, moveNext, movePrev } = sliderHook({reducer: (state, action) => {
-        if(!looped && action.type === sliderHook.types.next && state.centered === state.totalSlides - 1) {
-            return { ...action.changes, centered: state.centered }
-        } else return { ...action.changes }
-    }}, 0, children)
+    const {centered, moveNext, movePrev } = sliderHook({}, 0, children)
 
     
     return (

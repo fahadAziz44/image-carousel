@@ -14,10 +14,6 @@ const Wrapper = styled.div`
     &::-webkit-scrollbar { 
         display: none;  /* Safari and Chrome */
     }
-
-    /* .slides > div {
-        scroll-snap-align: start;
-    } */
     
     .slide {
         width: 100%;

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-import sliderHook from './SliderHook'
+import sliderHook from '../states/SliderState'
 import SlideViewer from './SlideViewer'
 import { ReactComponent as NextLogo } from '../images/right-chevron.svg'
 
@@ -64,5 +64,3 @@ ImageSlider.propTypes = {
 };
 
 export default ImageSlider
-
-

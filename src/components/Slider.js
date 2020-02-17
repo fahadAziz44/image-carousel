@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import SliderHook from './SliderHook'
+import sliderHook from './SliderHook'
 
 
 const Wrapper = styled.div`
@@ -51,14 +51,18 @@ const Wrapper = styled.div`
     } 
 `
 
-const ImageSlider = (props) => {
-    const {centered, moveNext, movePrev } = SliderHook(0, props.children)
+const ImageSlider = ({looped, children}) => {
+    
+    const {centered, moveNext, movePrev } = sliderHook({reducer: (state, action) => {
+        if(!looped && action.type === sliderHook.types.next && state.centered === state.totalSlides - 1) {
+            return { ...action.changes, centered: state.centered }
+        } else return { ...action.changes }
+    }}, 0, children)
 
     const slideRef = React.createRef()
-    const slideRefs = React.Children.map(props.children, () => {
+    const slideRefs = React.Children.map(children, () => {
         return React.createRef()
     })
-
 
     useEffect(() => {
         executeScroll(slideRefs[centered])
@@ -78,7 +82,7 @@ const ImageSlider = (props) => {
         <Wrapper>
             <div ref={slideRef} className='slider'>
                 {
-                    React.Children.map(props.children, (element, index) => {
+                    React.Children.map(children, (element, index) => {
                         return (
                         <div ref={slideRefs[index]} className={`slide slide_${index}`}>
                             {element}
@@ -98,7 +102,8 @@ const ImageSlider = (props) => {
 
 
 ImageSlider.propTypes = {
-    children: PropTypes.any
+    children: PropTypes.any,
+    looped: PropTypes.bool,
 };
 export default ImageSlider
 

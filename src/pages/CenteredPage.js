@@ -9,16 +9,25 @@ const CenteredFlex = styled.div`
     align-items: center;
     width: 100vw;
     height: 100vh;
+
+    .limiting-window {
+        height: 100%;
+        width: 100%;
+        max-width: 500px;
+        max-height: 500px;
+    }
 `
 
 const CenteredPage = (props) => {
     return (
         <CenteredFlex>
-            <ImageSlider>
-                {
-                    [...Array(5)].map((x, i) => <Image  key={i} index={i} />)
-                }
-            </ImageSlider>
+            <div className='limiting-window'>
+                <ImageSlider>
+                    {
+                        [...Array(5)].map((x, i) => <Image key={i} index={i} />)
+                    }
+                </ImageSlider>
+            </div>
         </CenteredFlex>
     )
 }
@@ -43,7 +52,7 @@ const ImageWrapper = styled.div`
 const Image = (props) => {
     return (
         <ImageWrapper {...props}>
-            <h4>{props.index}</h4>
+            <h2>{props.index + 1}</h2>
         </ImageWrapper>
     )
 }

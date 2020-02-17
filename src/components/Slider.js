@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react';
-import styled from 'styled-components';
-import PropTypes from 'prop-types';
+import React from 'react'
+import styled from 'styled-components'
+import PropTypes from 'prop-types'
 import sliderHook from './SliderHook'
+import SlideViewer from './SlideViewer'
+import { ReactComponent as NextLogo } from '../images/right-chevron.svg'
 
 
 const Wrapper = styled.div`
@@ -11,44 +13,34 @@ const Wrapper = styled.div`
     flex-direction: column;
     width: 100%;
     height: 100%;
-
+    position: relative;
     .nav-links {
+        
+    }
+`
+const NavLinks = styled.div`
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    .nav-link {
+        width: 60px;
+        height: 60px;
+        cursor: pointer;
         display: flex;
-        justify-content: space-around;
+        justify-content: center;
         align-items: center;
-        width: 100%;
-        .nav-link {
-            cursor: pointer;
+        opacity: 0.3;
+        &:hover {
+            opacity: 0.9;
+        }
+        &--prev {
+            transform: rotate(180deg);
         }
     }
-
-    .slider {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        overflow-x: scroll;
-        -webkit-overflow-scrolling: touch;
-        scroll-snap-type: x mandatory;
-        scrollbar-width: none; /* Firefox */
-        -ms-overflow-style: none;  /* Internet Explorer 10+ */
-        scroll-behavior: smooth;
-    }
-    .slider::-webkit-scrollbar { 
-        display: none;  /* Safari and Chrome */
-    }
-    .slides > div {
-        scroll-snap-align: start;
-    }
-    
-    .slide {
-        width: 100%;
-        flex-shrink: 0;
-        height: 100%;
-        scroll-behavior: smooth;
-        scroll-snap-align: start;
-        text-align: center;
-        position: relative;
-    } 
 `
 
 const ImageSlider = ({looped, children}) => {
@@ -59,52 +51,24 @@ const ImageSlider = ({looped, children}) => {
         } else return { ...action.changes }
     }}, 0, children)
 
-    const slideRef = React.createRef()
-    const slideRefs = React.Children.map(children, () => {
-        return React.createRef()
-    })
-
-    useEffect(() => {
-        executeScroll(slideRefs[centered])
-    });
-
-    const executeScroll = (ref) => {
-        if (slideRef && slideRef.current && ref && ref.current) {
-            slideRef.current.scroll({
-                left: ref.current.offsetLeft,
-                top: 0,
-                behavior: 'smooth'
-            })
-        }
-    }
-
+    
     return (
         <Wrapper>
-            <div ref={slideRef} className='slider'>
-                {
-                    React.Children.map(children, (element, index) => {
-                        return (
-                        <div ref={slideRefs[index]} className={`slide slide_${index}`}>
-                            {element}
-                        </div>
-                        )
-                    })
-                }
-            </div>
-            <div className='nav-links'>
-                <div className='nav-link nav-link--prev' onClick={movePrev}>Prev</div>
-                <div className='nav-link nav-link--next' onClick={moveNext}>Next</div>
-            </div>
+            <SlideViewer className='slider' showing={centered} slides={children} />
+            <NavLinks>
+                <div className='nav-link nav-link--prev' onClick={movePrev}><NextLogo className='left' /></div>
+                <div className='nav-link nav-link--next' onClick={moveNext}><NextLogo className='right' /></div>
+            </NavLinks>
         </Wrapper>
     )
 
 }
 
-
 ImageSlider.propTypes = {
     children: PropTypes.any,
     looped: PropTypes.bool,
 };
+
 export default ImageSlider
 
 

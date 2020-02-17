@@ -3,8 +3,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import sliderHook from '../states/SliderState'
 import SlideViewer from './SlideViewer'
-import { ReactComponent as NextLogo } from '../images/right-chevron.svg'
-
+import NavButtons from './NavButtons'
 
 const Wrapper = styled.div`
     display: flex;
@@ -14,33 +13,6 @@ const Wrapper = styled.div`
     width: 100%;
     height: 100%;
     position: relative;
-    .nav-links {
-        
-    }
-`
-const NavLinks = styled.div`
-    position: absolute;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    .nav-link {
-        width: 60px;
-        height: 60px;
-        cursor: pointer;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        opacity: 0.3;
-        &:hover {
-            opacity: 0.9;
-        }
-        &--prev {
-            transform: rotate(180deg);
-        }
-    }
 `
 
 const ImageSlider = ({looped, children}) => {
@@ -49,13 +21,9 @@ const ImageSlider = ({looped, children}) => {
     return (
         <Wrapper>
             <SlideViewer className='slider' showing={centered} slides={children} />
-            <NavLinks>
-                <div className='nav-link nav-link--prev' onClick={movePrev}><NextLogo className='left' /></div>
-                <div className='nav-link nav-link--next' onClick={moveNext}><NextLogo className='right' /></div>
-            </NavLinks>
+            <NavButtons moveNext={moveNext}  movePrev={movePrev} />
         </Wrapper>
     )
-
 }
 
 ImageSlider.propTypes = {

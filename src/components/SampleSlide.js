@@ -18,10 +18,10 @@ const SampleSlideWrapper = styled.div`
 `
 
 
-export default (props) => {
+export default ({children, ...rest}) => {
     return (
-        <SampleSlideWrapper {...props}>
-            <h2>{props.text}</h2>
+        <SampleSlideWrapper {...rest}>
+            <h2>{children}</h2>
         </SampleSlideWrapper>
     )
 }
